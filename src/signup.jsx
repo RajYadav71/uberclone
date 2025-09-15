@@ -1,31 +1,9 @@
 import React, { useState } from "react";
 import "./App.css";
-import CaptainMain from "./CaptainMain"; // captain main page
+import { Link } from "react-router-dom";
 
 function Signup() {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [signedUp, setSignedUp] = useState(false);
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setLoggedIn(true); // go to CaptainMain after login
-  };
-
-  const handleSignup = (e) => {
-    e.preventDefault();
-    setSignedUp(true); // go to CaptainMain after signup
-  };
-
-  // after login → CaptainMain
-  if (loggedIn) {
-    return <CaptainMain />;
-  }
-
-  // after signup → CaptainMain
-  if (signedUp) {
-    return <CaptainMain />;
-  }
 
   return (
     <div className="container">
@@ -33,33 +11,39 @@ function Signup() {
         <div className="flip-card-inner">
           {/* Login Page */}
           <div className="flip-card-front">
-            <h2>Uber Captain Login</h2>
-            <form onSubmit={handleLogin}>
+            <h2>Uber Login</h2>
+            <form>
               <input type="email" placeholder="Email" required />
               <input type="password" placeholder="Password" required />
-              <button type="submit">Login as a User</button>
-              <button type="submit">Login as a Captain</button>
+
+              <Link to="/user" className="btn">Login as a User</Link>
+              <Link to="/captain" className="btn">Login as a Captain</Link>
             </form>
             <p>
               Don&apos;t have an account?{" "}
-              <span onClick={() => setIsFlipped(true)}>Sign Up</span>
+              <span onClick={() => setIsFlipped(true)} style={{cursor:"pointer"}}>
+                Sign Up
+              </span>
             </p>
           </div>
 
           {/* Signup Page */}
           <div className="flip-card-back">
-            <h2>Uber Captain Signup</h2>
-            <form onSubmit={handleSignup}>
+            <h2>Uber Signup</h2>
+            <form>
               <input type="text" placeholder="Full Name" required />
               <input type="email" placeholder="Email" required />
               <input type="password" placeholder="Password" required />
               <input type="text" placeholder="Vehicle Number" required />
-              <button type="submit">Sign up as a User</button>
-              <button type="submit">Sign up as a Captain</button>
+
+              <Link to="/user" className="btn">Sign up as a User</Link>
+              <Link to="/captain" className="btn">Sign up as a Captain</Link>
             </form>
             <p>
               Already have an account?{" "}
-              <span onClick={() => setIsFlipped(false)}>Login</span>
+              <span onClick={() => setIsFlipped(false)} style={{cursor:"pointer"}}>
+                Login
+              </span>
             </p>
           </div>
         </div>
