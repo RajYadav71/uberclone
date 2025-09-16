@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import "./App.css";
-import Signup from "./signup"; // import Signup.jsx
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import User from "./User"; // user main page
 import CaptainMain from "./CaptainMain"; // captain main page
+import SignupUser from "./components/SignupUser";
+import SignupCaptain from "./components/SignupCap";
+import LoginUser from "./components/LoginUser";
+import LoginCaptain from "./components/LoginCap";
 
 function App() {
   const [showSignup, setShowSignup] = useState(false);
@@ -13,7 +16,10 @@ function App() {
       <Routes>
         <Route path="/user" element={<User />} />
         <Route path="/captain" element={<CaptainMain />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup-user" element={<SignupUser />} />
+        <Route path="/signup-captain" element={<SignupCaptain />} />
+        <Route path="/login-user" element={<LoginUser />} />
+        <Route path="/login-captain" element={<LoginCaptain />} />
         {/* default "/" route showing your Uber homepage */}
         <Route
           path="/"
@@ -76,10 +82,10 @@ function App() {
                         <option value="hi">Hindi</option>
                       </select>
                     </div>
-                    <Link to="/signup" className="header-link">
+                    <Link to="/login-captain" className="header-link">
                       Log in
                     </Link>
-                    <Link to="/signup" className="signup-btn">
+                    <Link to="/signup-captain" className="signup-btn">
                       Sign up
                     </Link>
                   </div>
@@ -129,7 +135,7 @@ function App() {
                       </Link>
                       <p className="signin-text">
                         Already have an account?{" "}
-                        <Link to="/signup" className="signin-link">
+                        <Link to="/login-captain" className="signin-link">
                           Sign in
                         </Link>
                       </p>
