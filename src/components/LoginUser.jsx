@@ -21,7 +21,8 @@ function LoginUser() {
     const data = await response.json();
     console.log(data);
     if (response.ok) {
-      window.location.href = "/User"; // Change this to your desired route
+      alert("Login successful");
+      window.location.href = "/user"; // Redirect to user dashboard or homepage
     }
   }
 

@@ -19,7 +19,7 @@ function LoginCaptain() {
         console.log(data);
         if (response.ok) {
             // Redirect to captain dashboard or homepage
-            window.location.href = "/CaptainMain";
+            window.location.href = "/Captain";
         }
     }
     return (

@@ -19,6 +19,10 @@ function SignupUser() {
     });
     const data = await response.json();
     console.log(data);
+    if (response.status === 201) {
+      alert("User registered successfully");
+      window.location.href = "/login-user"; // ✅ matches App.jsx
+    }
   }
   return (
     <div className="auth-card user">
