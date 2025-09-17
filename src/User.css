@@ -73,6 +73,7 @@ body{
   margin-left: 16px;
   font-family: sans-serif;
   transition: background 0.2s;
+  margin-top: 0px;
 }
 
 .navbar-signup:hover {

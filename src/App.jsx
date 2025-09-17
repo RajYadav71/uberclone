@@ -130,7 +130,7 @@ function App() {
                     <p className="sub-heading">Earn on your own schedule.</p>
 
                     <div className="cta-section">
-                      <Link to="/signup" className="get-started-btn">
+                      <Link to="/signup-captain" className="get-started-btn">
                         Get started
                       </Link>
                       <p className="signin-text">
