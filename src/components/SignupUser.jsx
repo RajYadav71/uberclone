@@ -10,7 +10,7 @@ function SignupUser() {
     const phone = document.getElementById("phone").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const response = await fetch("http://localhost:5000/signup-user", {
+    const response = await fetch("http://localhost:3000/signup-user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

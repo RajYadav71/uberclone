@@ -9,7 +9,7 @@ import LoginUser from "./components/LoginUser";
 import LoginCaptain from "./components/LoginCap";
 
 function App() {
-  const [showSignup, setShowSignup] = useState(false);
+  // const [showSignup, setShowSignup] = useState(false);
 
   return (
     <Router>
@@ -162,4 +162,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;

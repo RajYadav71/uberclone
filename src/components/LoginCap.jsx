@@ -1,14 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
-import CaptainMain from "../CaptainMain.jsx";
 
 function LoginCaptain() {
     async function handleSubmit(event) {
         event.preventDefault();
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
-        const response = await fetch("http://localhost:5000/login-captain", {
+        const response = await fetch("http://localhost:3000/login-captain", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -20,7 +19,7 @@ function LoginCaptain() {
         console.log(data);
         if (response.ok) {
             // Redirect to captain dashboard or homepage
-            window.location.href = "/CaptainMain"; // Change this to your desired route
+            window.location.href = "/CaptainMain";
         }
     }
     return (
