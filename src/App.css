@@ -613,6 +613,7 @@ form button {
   border-radius: 12px;
   font-size: 15px;
   background-color: #f3f3f3;
+  color: black;
 }
 
 .auth-btn {

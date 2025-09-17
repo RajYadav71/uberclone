@@ -23,6 +23,50 @@ const userSchema = new mongoose.Schema({
     price: String,
 })
 
+const capSchema = new mongoose.Schema({
+  name: String,
+  phone: String,
+  email: String,
+  password: String,
+});
+
+const usersSchema  = new mongoose.Schema({
+  name: String,
+  phone: String,
+  email: String,
+  password: String,
+});
+
+const capModel = mongoose.model("Captain", capSchema);
+const usersSchemaModel = mongoose.model("Users", usersSchema);
+
+
+
+app.post("/signup-captain", async (req, res) => {
+  const { name, phone, email, password } = req.body;
+  try {
+    const newCap = new capModel({ name, phone, email, password });
+    await newCap.save();
+    res.status(201).json({ message: "Captain registered successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post("/signup-user", async (req, res) => {
+  const { name, phone, email, password } = req.body;
+  try {
+    const newUser = new usersSchemaModel({ name, phone, email, password });
+    await newUser.save();
+    res.status(201).json({ message: "User registered successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+
+
 const User = mongoose.model('User', userSchema);
 
 app.post("/bookRide",async (req, res) => {
