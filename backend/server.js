@@ -25,6 +25,7 @@ const rideSchema = new mongoose.Schema({
   car: String,
   seats: String,
   price: String,
+  userName: String,
 });
 
 // Captain Schema
@@ -93,12 +94,35 @@ app.post("/signup-user", async (req, res) => {
 });
 
 // User Login
+// app.post("/login-user", async (req, res) => {
+//   const { email, password } = req.body;
+//   try {
+//     const user = await UserModel.findOne({ email, password });
+//     if (user) {
+//       res.status(200).json({ message: "User logged in successfully" });
+//     } else {
+//       res.status(401).json({ message: "Invalid email or password" });
+//     }
+//   } catch (err) {
+//     console.error("Login User Error:", err);
+//     res.status(500).json({ message: "Server error", error: err.message });
+//   }
+// });
+
+// User Login
 app.post("/login-user", async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await UserModel.findOne({ email, password });
     if (user) {
-      res.status(200).json({ message: "User logged in successfully" });
+      res.status(200).json({
+        message: "User logged in successfully",
+        user: {
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+        },
+      });
     } else {
       res.status(401).json({ message: "Invalid email or password" });
     }
@@ -108,11 +132,12 @@ app.post("/login-user", async (req, res) => {
   }
 });
 
+
 // Book Ride
 app.post("/bookRide", async (req, res) => {
-  const { pickup, dropoff, date, car, seats, price } = req.body;
+  const { pickup, dropoff, date, car, seats, price, userName } = req.body;
   try {
-    const newRide = new RideModel({ pickup, dropoff, date, car, seats, price });
+    const newRide = new RideModel({ pickup, dropoff, date, car, seats, price, userName });
     await newRide.save();
     res.status(201).json({ message: "Ride booked successfully" });
   } catch (err) {
