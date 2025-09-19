@@ -90,6 +90,7 @@ async function bookRide(ride) {
   const pickup = document.getElementById('pickup').value;
   const dropoff = document.getElementById('dropoff').value;
   const date = new Date().toISOString();
+  const userName = localStorage.getItem("userName");
 
   if (!pickup || !dropoff) {
     alert('Please enter pickup and drop locations.');
@@ -108,6 +109,7 @@ async function bookRide(ride) {
       car: ride.name,
       seats: ride.seats,
       price: ride.price,
+      userName
     }),
   });
 
@@ -115,7 +117,8 @@ async function bookRide(ride) {
   console.log(data);
 
   if (response.ok) {
-    alert('Ride booked successfully!');
+    const req = document.getElementById("req");
+    req.style.display = "block";
   } else {
     alert('Failed to book ride. Please try again.');
   }
@@ -182,6 +185,9 @@ function ChooseRide() {
             </div>
           </div>
         ))}
+      </div>
+      <div className="wait" id="req">
+        <p className="req">waiting for captrain to approve</p>
       </div>
     </section>
   );
