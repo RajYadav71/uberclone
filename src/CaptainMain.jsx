@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-// import Verification from "./verification";
+import Verification from "./verification";
 
 function CaptainMain() {
   const [isAvailable, setIsAvailable] = useState(true);
@@ -255,4 +255,4 @@ function CaptainMain() {
   );
 }
 
-export default CaptainMain;
+export default CaptainMain;
