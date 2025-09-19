@@ -187,7 +187,7 @@ function ChooseRide() {
         ))}
       </div>
       <div className="wait" id="req">
-        <p className="req">Waiting for Captain to Approve......</p>
+        <p className="req">waiting for captrain to approve</p>
       </div>
     </section>
   );
