@@ -20,6 +20,7 @@ function SignupUser() {
     const data = await response.json();
     console.log(data);
     if (response.status === 201) {
+      localStorage.setItem("userName", name);
       alert("User registered successfully");
       window.location.href = "/login-user";
     }
@@ -90,7 +91,8 @@ function SignupUser() {
                   borderRadius: '12px',
                   fontSize: '15px',
                   background: '#f9fafb',
-                  outline: 'none'
+                  outline: 'none',
+                  color:"black"
                 }} />
             </div>
 
@@ -104,7 +106,8 @@ function SignupUser() {
                   borderRadius: '12px',
                   fontSize: '15px',
                   background: '#f9fafb',
-                  outline: 'none'
+                  outline: 'none',
+                  color:"black"
                 }} />
             </div>
 
@@ -118,7 +121,8 @@ function SignupUser() {
                   borderRadius: '12px',
                   fontSize: '15px',
                   background: '#f9fafb',
-                  outline: 'none'
+                  outline: 'none',
+                  color:"black"
                 }} />
             </div>
 

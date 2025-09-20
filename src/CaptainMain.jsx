@@ -1,11 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Verification from "./verification";
 
 function CaptainMain() {
-  const [isAvailable, setIsAvailable] = useState(true);
   const [currentView, setCurrentView] = useState("dashboard");
-  const [submittedData, setSubmittedData] = useState(null);
+  const [rides, setRides] = useState([]);
+
+  useEffect(() => {
+    async function loadRides() {
+      try {
+        const res = await fetch("http://localhost:3000/rides?status=pending");
+        const json = await res.json();
+        setRides(Array.isArray(json.rides) ? json.rides : []);
+      } catch (err) {
+        console.error("Failed to fetch rides", err);
+        setRides([]);
+      }
+    }
+    loadRides();
+  }, []);
+
+  async function acceptRide(rideId) {
+    try {
+      const res = await fetch(`http://localhost:3000/rides/${rideId}/accept`, { method: "PATCH" });
+      if (!res.ok) throw new Error("Failed to accept");
+      setRides((prev) => prev.filter((r) => r._id !== rideId));
+      alert("Booked successfully");
+    } catch (err) {
+      console.error(err);
+      alert("Could not accept ride");
+    }
+  }
+
+  async function rejectRide(rideId) {
+    try {
+      const res = await fetch(`http://localhost:3000/rides/${rideId}/reject`, { method: "PATCH" });
+      if (!res.ok) throw new Error("Failed to reject");
+      setRides((prev) => prev.filter((r) => r._id !== rideId));
+      alert("Rejected ride");
+    } catch (err) {
+      console.error(err);
+      alert("Could not reject ride");
+    }
+  }
   return (
     <div className="captain-main">
       {/* Navbar */}
@@ -69,8 +106,7 @@ function CaptainMain() {
 
       {/* Conditional Rendering */}
       {currentView === "verification" ? (
-        <Verification onSubmitSuccess={(data) => {
-          setSubmittedData(data);
+        <Verification onSubmitSuccess={() => {
           setTimeout(() => {
             setCurrentView("dashboard");
           }, 2000);
@@ -111,18 +147,26 @@ function CaptainMain() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td></td>
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
-                    <td>—</td>
-                    <td><span className="status-pending">Pending</span></td>
-                    <td>
-                      <button className="action-btn accept">Accept</button>
-                      <button className="action-btn reject">Reject</button>
-                    </td>
-                  </tr>
+                  {rides.length === 0 ? (
+                    <tr>
+                      <td colSpan="7" style={{ textAlign: "center" }}>No orders yet</td>
+                    </tr>
+                  ) : (
+                    rides.map((ride) => (
+                      <tr key={ride._id}>
+                        <td>{ride._id?.slice(-6)}</td>
+                        <td>{ride.userName || "—"}</td>
+                        <td>{ride.pickup || "—"}</td>
+                        <td>{ride.dropoff || "—"}</td>
+                        <td>{ride.price || "—"}</td>
+                        <td><span className="status-pending">Pending</span></td>
+                        <td>
+                          <button className="action-btn accept" onClick={() => acceptRide(ride._id)}>Accept</button>
+                          <button className="action-btn reject" onClick={() => rejectRide(ride._id)}>Reject</button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>

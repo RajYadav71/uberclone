@@ -1,3 +1,5 @@
+/* eslint-env node */
+/* eslint-disable no-undef */
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -26,6 +28,7 @@ const rideSchema = new mongoose.Schema({
   seats: String,
   price: String,
   userName: String,
+  status: { type: String, enum: ["pending", "accepted", "rejected"], default: "pending" },
 });
 
 // Captain Schema
@@ -139,9 +142,67 @@ app.post("/bookRide", async (req, res) => {
   try {
     const newRide = new RideModel({ pickup, dropoff, date, car, seats, price, userName });
     await newRide.save();
-    res.status(201).json({ message: "Ride booked successfully" });
+    res.status(201).json({ message: "Ride booked successfully", ride: newRide });
   } catch (err) {
     console.error("Book Ride Error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+// Get all rides
+app.get("/rides", async (req, res) => {
+  try {
+    const { status } = req.query;
+    const filter = {};
+    if (status) filter.status = status;
+    const rides = await RideModel.find(filter).sort({ _id: -1 });
+    res.status(200).json({ rides });
+  } catch (err) {
+    console.error("Get Rides Error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+// Get single ride by id
+app.get("/ride/:id", async (req, res) => {
+  try {
+    const ride = await RideModel.findById(req.params.id);
+    if (!ride) return res.status(404).json({ message: "Ride not found" });
+    res.status(200).json({ ride });
+  } catch (err) {
+    console.error("Get Ride Error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+// Accept ride
+app.patch("/rides/:id/accept", async (req, res) => {
+  try {
+    const ride = await RideModel.findByIdAndUpdate(
+      req.params.id,
+      { status: "accepted" },
+      { new: true }
+    );
+    if (!ride) return res.status(404).json({ message: "Ride not found" });
+    res.status(200).json({ message: "Ride accepted", ride });
+  } catch (err) {
+    console.error("Accept Ride Error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+// Reject ride
+app.patch("/rides/:id/reject", async (req, res) => {
+  try {
+    const ride = await RideModel.findByIdAndUpdate(
+      req.params.id,
+      { status: "rejected" },
+      { new: true }
+    );
+    if (!ride) return res.status(404).json({ message: "Ride not found" });
+    res.status(200).json({ message: "Ride rejected", ride });
+  } catch (err) {
+    console.error("Reject Ride Error:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 });

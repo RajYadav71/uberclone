@@ -1,7 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./User.css";
 
+function startPolling(rideId) {
+  if (!rideId) return;
+  const reqP = document.querySelector("#req .req");
+  const intervalId = setInterval(async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/ride/${rideId}`);
+      if (!res.ok) throw new Error("ride fetch failed");
+      const { ride } = await res.json();
+      if (!ride) return;
+      if (ride.status === "accepted") {
+        if (reqP) reqP.innerText = "Booked successfully";
+        clearInterval(intervalId);
+      } else if (ride.status === "rejected") {
+        if (reqP) reqP.innerText = "Rejected ride";
+        clearInterval(intervalId);
+      } else {
+        if (reqP) reqP.innerText = "waiting for captrain to approve";
+      }
+    } catch (e) {
+      // keep trying silently
+      console.error(e);
+    }
+  }, 2000);
+}
+
 function App2() {
+  useEffect(() => {
+    // Clear any existing ride data on page load to prevent showing old messages
+    localStorage.removeItem("lastRideId");
+  }, []);
   return (
     <>
       <Navbar />
@@ -118,7 +147,15 @@ async function bookRide(ride) {
 
   if (response.ok) {
     const req = document.getElementById("req");
-    req.style.display = "block";
+    const reqP = document.querySelector("#req .req");
+    if (req) {
+      req.style.display = "block";
+      if (reqP) reqP.innerText = "waiting for captrain to approve";
+    }
+    if (data && data.ride && data.ride._id) {
+      localStorage.setItem("lastRideId", data.ride._id);
+      startPolling(data.ride._id);
+    }
   } else {
     alert('Failed to book ride. Please try again.');
   }
@@ -186,7 +223,7 @@ function ChooseRide() {
           </div>
         ))}
       </div>
-      <div className="wait" id="req">
+      <div className="wait" id="req" style={{ display: "none" }}>
         <p className="req">waiting for captrain to approve</p>
       </div>
     </section>
